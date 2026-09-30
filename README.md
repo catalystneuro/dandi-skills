@@ -39,6 +39,10 @@ python dandiset-metadata/scripts/dandiset_metadata.py paper 10.1016/j.cell.2021.
 
 Run it with `--help` for the full list of commands.
 
+`dandiset-metadata/tests` has offline tests of the parts that need no network
+(name handling, award grouping, the edit operations, validation, and the diff):
+`pytest dandiset-metadata/tests`.
+
 ## Installation
 
 ### Claude Code

@@ -1,6 +1,6 @@
 # Dandiset Metadata Fields
 
-Shapes checked against dandischema 0.14 (schema version 0.7.x). The editable
+Shapes checked against dandischema 0.14; they hold for drafts at schema versions 0.6 and 0.7. The editable
 fields are listed in the order the DANDI metadata editor shows them. Fields the
 server computes (`id`, `citation`, `assetsSummary`, `manifestLocation`,
 `version`, `url`, `dateCreated`, `doi`, `datePublished`) are left alone: the
@@ -32,7 +32,7 @@ A person:
 {
   "schemaKey": "Person",
   "name": "Li, Nuo",
-  "identifier": "0000-0003-0068-3377",
+  "identifier": "0000-0002-6613-5018",
   "email": "nuo.li@example.edu",
   "roleName": ["dcite:Author", "dcite:ContactPerson"],
   "includeInCitation": true,
@@ -73,7 +73,8 @@ A funder, one entry per award:
 }
 ```
 
-- The same agency with two awards is two entries.
+- The same agency with two awards is two entries. A funder the paper names
+  without an award number is one entry without `awardNumber`.
 - `awardNumber` holds only the number, with no "Grant", "Award No.", or
   "project number" prefix. Copy it as the source gives it; do not reformat it
   beyond removing such a prefix.
@@ -142,7 +143,7 @@ CC-BY-4.0 when they have no preference.
 `identifier` is free text: the protocol number and the approving body.
 `contactPoint` is optional and only takes `email` and `url` (there is no
 `name`). The protocol number comes from the user or from the paper's methods
-section; never invent one.
+section (the `fulltext` command finds it); never invent one.
 
 ## Related Resources
 

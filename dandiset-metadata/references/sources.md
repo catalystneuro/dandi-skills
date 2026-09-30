@@ -14,27 +14,32 @@ comes first.
 
 - OpenAlex assigns ORCIDs to authors by its own disambiguation, and it
   sometimes attaches the ORCID of a different researcher with the same name.
-  Run `check-orcid` before attaching an ORCID to a person who is already a
-  contributor. For a fresh import from the paper, an ORCID that the record
-  itself lists under that paper is safe; `check-orcid` with `--paper` confirms
-  this.
+  `import-authors` checks every ORCID against the ORCID registry before
+  attaching it, treating the paper's authors and institutions as the team; an
+  ORCID taken from `paper` output by hand needs `check-orcid` first.
 - OpenAlex's institution list for an author can include historical or
   secondary affiliations that are not on the paper. `import-authors` resolves
   each raw affiliation string from the paper through ROR first and accepts an
   OpenAlex institution only when its name appears in that string. Anything it
   cannot confirm is kept as a plain name and reported as unresolved.
-- Funding in OpenAlex is often incomplete or empty. Read the paper's
-  acknowledgments (the publisher page, PubMed Central, or the bioRxiv full
-  text) and ask the user before concluding that the list is complete.
+- Funding in OpenAlex is often incomplete or empty, and one award often
+  appears in several spellings ("1F32MH119766", "F32 MH119766"). `paper`
+  groups the spellings of each award; pick the one printed in the paper
+  (`fulltext`) and ask the user before concluding that the list is complete.
 - bioRxiv and medRxiv DOIs carry no version suffix in OpenAlex
-  (`10.1101/2023.01.01.522000`, not `...522000v2`).
+  (`10.1101/2023.01.01.522000`, not `...522000v2`). eLife reviewed preprints
+  have versioned DOIs (`10.7554/elife.85646.3`); use the unversioned article
+  DOI.
 - Set `OPENALEX_MAILTO` to an email address for the faster polite pool.
 
 ## Crossref (`paper`, `search-paper`)
 
 Confirms that a DOI exists and gives its title, journal, type (use
-`posted-content` to recognize a preprint), and sometimes funders with award
-numbers that OpenAlex lacks. `search-paper` takes a free-text citation.
+`posted-content` to recognize a preprint), sometimes funders with award
+numbers that OpenAlex lacks, and for a preprint often the DOI of the published
+version, which `paper` reports as `published_version`. `search-paper` takes a
+free-text citation; its results are candidates and are not recorded as
+verified until you run `paper` on the one you choose.
 
 A search result is a candidate, not a match. The same lab often has several
 papers with the same authors, grants, and topic, and linking the wrong one is
@@ -42,27 +47,47 @@ worse than linking none. Link a paper only when the dandiset's own text names
 it (its DOI, most of its title, or a first-author citation such as "Chen et al.
 2021"), or when the user confirms it.
 
+## Europe PMC (`fulltext`)
+
+For papers in PubMed Central (and some preprints), Europe PMC has the grant
+list and the open-access full text. `fulltext` returns the grants, the
+acknowledgments and funding statement, and the sentences that mention ethics
+approval, which usually name the committee and the protocol number. Papers
+behind a paywall return only the grant list; read the publisher's page or ask
+the user for the rest.
+
 ## ROR (`ror`)
 
 The affiliation matcher returns candidates and marks at most one as `chosen`
-when it is confident. Use the chosen one. When none is chosen, look at name,
+when it is confident. The command marks a match `verified` when its name is
+exactly the query, or when ROR chose it and its name appears in the query;
+ROR's choice alone can be a different organization ("Kinship Foundation"
+returns "Kinship Conservation Fellows" as chosen). When nothing is verified, look at name,
 country and type before picking, and ask the user if it is still unclear: many
 countries have a "National Institutes of Health", and universities have
 separate records for their medical schools and hospitals.
 
 For funders, search the specific agency ("National Institute of Mental
-Health"), not the umbrella ("NIH"), when the source names it.
+Health"), not the umbrella ("NIH"), when the source names it. The matcher is
+tuned for affiliation strings and often marks nothing as chosen for a funder
+name; `--country` filters the candidates and `exact_name` marks a match whose
+name is exactly the query. For the funders of a paper, the `funder_ror` values
+from `paper` are usually the simplest source. Only matches marked `verified`
+are recorded in the session log; after the user picks another candidate, rerun
+`ror` with that organization's exact name.
 
 ## ORCID Registry (`orcid-search`, `check-orcid`)
 
 `orcid-search` finds candidates by name. Several people with the same name is
-the normal case, and a name match alone is never enough. `check-orcid` reads
+the normal case, and a name match alone is never enough, so its results are
+not recorded as verified. `check-orcid` reads
 the ORCID record and reports `corroborated` only when the record carries a
 matching name and also does one of the following: lists one of the dandiset's
 papers, lists an institution that one of the contributors is affiliated with,
 claims works co-authored with another contributor, or has an OpenAlex profile
 of at least five works at one of those institutions. Anything else comes back
-`unconfirmed`; ask the user or leave the ORCID out.
+`unconfirmed`; ask the user or leave the ORCID out. If the user confirms it,
+rerun `check-orcid` with `--confirmed-by-user` to record it.
 
 When the user gives an ORCID directly, still run `check-orcid` on it, to catch
 a typo and to record it as verified.
