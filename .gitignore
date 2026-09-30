@@ -1,0 +1,5 @@
+.dandiset-metadata/
+__pycache__/
+*.original.json
+*.proposed.json
+.DS_Store

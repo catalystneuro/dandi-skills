@@ -1,0 +1,24 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "dandi-skills",
+  "owner": {
+    "name": "DANDI Archive",
+    "email": "info@dandiarchive.org"
+  },
+  "metadata": {
+    "description": "Agent skills for working with the DANDI Archive.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "dandiset-metadata",
+      "description": "Populate or improve dandiset metadata on the DANDI Archive: contributors with ORCIDs and ROR affiliations, funders and awards, related publications, subject terms, keywords, license, and ethics approval, with every identifier taken from a live lookup.",
+      "source": "./",
+      "version": "0.1.0",
+      "strict": false,
+      "skills": [
+        "./dandiset-metadata"
+      ]
+    }
+  ]
+}
