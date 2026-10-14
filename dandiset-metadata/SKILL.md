@@ -240,11 +240,10 @@ acknowledgement.
 
 In owner mode, ask the user for the license (`spdx:CC-BY-4.0`, the common
 choice, or `spdx:CC0-1.0`), and draft a title and description that pass the
-checklist. When the paper has acknowledgments, also draft the `acknowledgement`
-from them, without the funding sentences, which go to the funder entries. Keep
-the drafts as `set_text` operations in their own file, show them, and apply
-that file with `dm apply ... --owner` once the user approves. In a review,
-leave these as suggestions.
+checklist. When the paper has acknowledgments, copy them verbatim into the
+`acknowledgement`. Keep the drafts as `set_text` operations in their own file,
+show them, and apply that file with `dm apply ... --owner` once the user
+approves. In a review, leave these as suggestions.
 
 ### 7. Validate, Review, Save
 

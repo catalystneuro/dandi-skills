@@ -19,11 +19,9 @@ the dataset belongs to one paper, the paper's title is a good default.
 good description also names the data streams (for example "Neuropixels
 recordings from ALM and striatum, spike-sorted units, licking and video"), the
 species and number of subjects, and a sentence or two on the task and methods.
-Funding does not belong here or in `acknowledgement`; it goes in the
-contributors.
+Funding does not belong in the description; it goes in the contributors.
 
-`acknowledgement` is a string: the paper's acknowledgments, without the funding
-sentences.
+`acknowledgement` is a string: the paper's acknowledgments, copied verbatim.
 
 ## Contributors
 
