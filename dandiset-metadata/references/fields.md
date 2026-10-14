@@ -22,6 +22,9 @@ species and number of subjects, and a sentence or two on the task and methods.
 Funding does not belong here or in `acknowledgement`; it goes in the
 contributors.
 
+`acknowledgement` is a string: the paper's acknowledgments, without the funding
+sentences.
+
 ## Contributors
 
 `contributor` is one list holding people, organizations, and funders.

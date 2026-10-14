@@ -233,15 +233,18 @@ dm apply 000123.proposed.json ops.json
 
 `dm apply --help` lists every operation, including `add_person`, `set_orcid`,
 `add_affiliation`, `add_role`, `set_email`, `set_funder`, `split_funder`,
-`set_license`, and, in owner mode, `set_text` for the title and description.
+`set_license`, and, in owner mode, `set_text` for the title, description and
+acknowledgement.
 
-### 6. License, Title, Description
+### 6. License, Title, Description, Acknowledgement
 
 In owner mode, ask the user for the license (`spdx:CC-BY-4.0`, the common
 choice, or `spdx:CC0-1.0`), and draft a title and description that pass the
-checklist. Keep the drafts as `set_text` operations in their own file, show
-them, and apply that file with `dm apply ... --owner` once the user approves.
-In a review, leave these as suggestions.
+checklist. When the paper has acknowledgments, also draft the `acknowledgement`
+from them, without the funding sentences, which go to the funder entries. Keep
+the drafts as `set_text` operations in their own file, show them, and apply
+that file with `dm apply ... --owner` once the user approves. In a review,
+leave these as suggestions.
 
 ### 7. Validate, Review, Save
 
